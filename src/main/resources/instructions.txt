@@ -1,0 +1,43 @@
+ethereum address
+3ebd22d6e5214bc56d20c5816c4ebf60aca88b41
+
+echo "1111" > ~/swarmpass
+
+command.....
+startswarm
+
+
+upload a file to swarm: 
+<uphash> = swarm up /path/to/file.txt
+
+karel's key: 0x0224a563f58644fb737b0c26c4a71d14b179236eaeeb3502030a966daa8d9a60a9
+Narendra's Key: 0x93ec3020dc226f11eb8425c85f78b7ece0435a87
+uploading a file: 
+swarm --bzzapi http://swarm-gateways.net up <path to file> 
+
+restrict access to a content reference: 
+swarm --bzzaccount 3ebd22d6e5214bc56d20c5816c4ebf60aca88b41 --password <password file path> access new act --grant-keys keys.txt <uphash>
+
+
+query just the enclosing manifest (metadata):
+curl localhost:8500/bzz-raw:/93ce4f822f49c2149b5e37602fb02dbf1e1d4b7367c97dc28fe294f341021edc | jsonpp
+
+query and decrypt the actual content:
+curl localhost:8500/bzz-raw:/93ce4f822f49c2149b5e37602fb02dbf1e1d4b7367c97dc28fe294f341021edc/<path to file>
+
+working with feeds:
+first create a feed, then upload the asset, then update the feed with the hash to point to
+
+create a feed:
+swarm --bzzaccount 3ebd22d6e5214bc56d20c5816c4ebf60aca88b41 --password <password file path> feed create --name carrier
+what comes back is the hash of the feed
+
+update a feed (note the 0x1b prefix of the target uploaded data file):
+swarm --bzzaccount 3ebd22d6e5214bc56d20c5816c4ebf60aca88b41 feed update 0x1b69551aff87542a27c7ffc0463bc9f8c1bd5646086c4fa4d2a7b4e4bfb60ef192
+
+first read: get the latest version posted
+curl localhost:8500/bzz-feed:/?user=3ebd22d6e5214bc56d20c5816c4ebf60aca88b41 > readhash.txt
+vi readhash.txt, then :%!xdd
+get back a binary of the hex encoded address that you posted
+
+curl localhost:8500/bzz:/<hash>
